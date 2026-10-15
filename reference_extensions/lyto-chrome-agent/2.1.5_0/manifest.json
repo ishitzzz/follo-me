@@ -1,0 +1,52 @@
+{
+   "action": {
+      "default_icon": {
+         "16": "icons/icon16.png",
+         "48": "icons/icon48.png"
+      },
+      "default_title": "Lyto AI"
+   },
+   "background": {
+      "service_worker": "background.js",
+      "type": "module"
+   },
+   "commands": {
+      "_execute_action": {
+         "description": "Open Lyto side panel",
+         "suggested_key": {
+            "default": "Ctrl+Shift+L",
+            "mac": "MacCtrl+Shift+L"
+         }
+      }
+   },
+   "content_scripts": [ {
+      "all_frames": true,
+      "js": [ "content.js" ],
+      "match_about_blank": true,
+      "matches": [ "http://*/*", "https://*/*" ],
+      "run_at": "document_idle"
+   } ],
+   "content_security_policy": {
+      "extension_pages": "script-src 'self' 'wasm-unsafe-eval'; object-src 'self'; img-src 'self' data: https: blob: http://localhost:3000"
+   },
+   "description": "AI-powered research assistant and browser control.",
+   "host_permissions": [ "\u003Call_urls>" ],
+   "icons": {
+      "128": "icons/icon128.png",
+      "16": "icons/icon16.png",
+      "48": "icons/icon48.png"
+   },
+   "key": "MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAo49o+vSObsXVKfBzGjCKmZL14ExXScNr4ZoO24O0IaPAVki6cQtBen4VnOPlclp9FBmWOTOg11UyFKKgx/thylpj5rZvtuq2lIer8fQYm3zBK8Zet2zXfN6SZMRrU5Bj14eNswMJC9xAFNF2Ep5d2HOjo2lMyX/WMRAMM9wCI/lgp6p+ESkxPhTLQahlYnjeJZ/QoxIyq6vLXwPac1QKKNNurD/avX2QtjiWIW8Yar5nWA4G22TJWFJ0Weeu/pp/XbjgyXsG2IxK/YVGcVRwFiaYbHa4V45UEEk1JPNK339U6ngRQG95a1tuzpQ/+6AJr6k+5SR7GK+zN3Qv+oWwQQIDAQAB",
+   "manifest_version": 3,
+   "name": "Lyto AI - Research Assistant",
+   "permissions": [ "activeTab", "tabs", "scripting", "storage", "webNavigation", "sidePanel", "debugger", "clipboardWrite", "tabGroups", "cookies", "contextMenus", "notifications", "downloads" ],
+   "side_panel": {
+      "default_path": "panel.html"
+   },
+   "update_url": "https://clients2.google.com/service/update2/crx",
+   "version": "2.1.5",
+   "web_accessible_resources": [ {
+      "matches": [ "\u003Call_urls>" ],
+      "resources": [ "panel.html", "preview.html", "assets/*", "katex.min.js", "katex.min.css", "fonts/*" ]
+   } ]
+}

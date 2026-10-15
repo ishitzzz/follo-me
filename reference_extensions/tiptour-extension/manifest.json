@@ -1,0 +1,71 @@
+{
+  "manifest_version": 3,
+  "name": "TipTour — AI Cursor for the Web",
+  "version": "5.40.0",
+  "description": "A coral cursor that flies to elements and answers questions about any website. Press Cmd/Ctrl+K to ask anything.",
+  "permissions": ["activeTab", "storage", "scripting", "webNavigation", "tabs", "sidePanel", "debugger"],
+  "host_permissions": [
+    "https://agreeable-opossum-599.convex.site/*",
+    "http://*/*",
+    "https://*/*"
+  ],
+  "optional_host_permissions": ["<all_urls>"],
+  "content_scripts": [
+    {
+      "matches": ["http://*/*", "https://*/*"],
+      "exclude_matches": [
+        "https://chromewebstore.google.com/*",
+        "https://chrome.google.com/webstore/*",
+        "https://app.tiptour.io/*",
+        "https://tiptour.io/*"
+      ],
+      "js": ["embed.js", "content-shell.js"],
+      "run_at": "document_idle",
+      "all_frames": false
+    }
+  ],
+  "action": {
+    "default_icon": {
+      "16": "icons/icon-16.png",
+      "48": "icons/icon-48.png",
+      "128": "icons/icon-128.png"
+    }
+  },
+  "side_panel": {
+    "default_path": "sidepanel.html"
+  },
+  "icons": {
+    "16": "icons/icon-16.png",
+    "48": "icons/icon-48.png",
+    "128": "icons/icon-128.png"
+  },
+  "commands": {
+    "open-agent": {
+      "suggested_key": {
+        "default": "Ctrl+K",
+        "mac": "Command+K"
+      },
+      "description": "Open TipTour AI assistant (text)"
+    },
+    "open-voice": {
+      "suggested_key": {
+        "default": "Ctrl+Shift+K",
+        "mac": "Command+Shift+K"
+      },
+      "description": "Toggle TipTour voice mode"
+    }
+  },
+  "homepage_url": "https://tiptour.io",
+  "externally_connectable": {
+    "matches": [
+      "https://app.tiptour.io/*",
+      "http://localhost:3100/*"
+    ]
+  },
+  "content_security_policy": {
+    "extension_pages": "default-src 'self'; script-src 'self'; style-src 'self' 'unsafe-inline'; connect-src 'self' https://agreeable-opossum-599.convex.site https://agreeable-opossum-599.convex.cloud; img-src 'self' data: https:"
+  },
+  "background": {
+    "service_worker": "background.js"
+  }
+}

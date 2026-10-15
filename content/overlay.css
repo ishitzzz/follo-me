@@ -1,0 +1,333 @@
+/* =========================================
+   FolloMe — Overlay Styles
+   Minimal, premium, non-intrusive overlay
+   ========================================= */
+
+/* Reset for FolloMe elements */
+#follome-overlay,
+#follome-overlay * {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+  font-family: 'Inter', 'Segoe UI', system-ui, sans-serif;
+  line-height: 1.5;
+}
+
+/* ── Main Container ── */
+#follome-overlay {
+  position: fixed;
+  bottom: 24px;
+  right: 24px;
+  width: 380px;
+  max-height: 520px;
+  background: rgba(15, 15, 17, 0.85);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 12px;
+  box-shadow: 0 12px 32px rgba(0, 0, 0, 0.4);
+  z-index: 2147483646;
+  overflow: hidden;
+  color: #ededed;
+  font-size: 13px;
+  transform: translateY(20px) scale(0.96);
+  opacity: 0;
+  transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+  display: flex;
+  flex-direction: column;
+}
+
+#follome-overlay.follome-visible {
+  transform: translateY(0) scale(1);
+  opacity: 1;
+}
+
+#follome-overlay.follome-minimized .follome-body {
+  display: none;
+}
+
+#follome-overlay.follome-minimized {
+  max-height: 48px;
+  width: 200px;
+}
+
+/* ── Header ── */
+.follome-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 12px 16px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+  cursor: grab;
+  user-select: none;
+  flex-shrink: 0;
+}
+
+.follome-header:active {
+  cursor: grabbing;
+}
+
+.follome-logo {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.follome-icon {
+  font-size: 14px;
+  font-weight: bold;
+  color: #ededed;
+}
+
+.follome-title {
+  font-size: 13px;
+  font-weight: 500;
+  color: #ededed;
+}
+
+.follome-controls {
+  display: flex;
+  gap: 4px;
+}
+
+.follome-controls button {
+  width: 28px;
+  height: 28px;
+  border: none;
+  background: transparent;
+  color: #a1a1aa;
+  border-radius: 6px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 14px;
+  transition: background 0.2s ease, color 0.2s ease;
+}
+
+.follome-controls button:hover {
+  background: rgba(255, 255, 255, 0.1);
+  color: #ededed;
+}
+
+/* ── Body ── */
+.follome-body {
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  flex: 1;
+}
+
+/* ── Status Bar ── */
+.follome-status {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 10px 16px;
+  font-size: 11px;
+  color: #a1a1aa;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+  flex-shrink: 0;
+}
+
+/* ── Pulse Indicator ── */
+.follome-pulse {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: #a1a1aa;
+  position: relative;
+  flex-shrink: 0;
+}
+
+.follome-pulse.active {
+  background: #f59e0b;
+}
+
+.follome-pulse.success {
+  background: #10b981;
+}
+
+.follome-pulse.error {
+  background: #ef4444;
+}
+
+/* ── Content Area ── */
+.follome-content {
+  padding: 16px;
+  overflow-y: auto;
+  max-height: 340px;
+  flex: 1;
+  scrollbar-width: thin;
+  scrollbar-color: rgba(255, 255, 255, 0.2) transparent;
+}
+
+.follome-content::-webkit-scrollbar {
+  width: 4px;
+}
+
+.follome-content::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.follome-content::-webkit-scrollbar-thumb {
+  background: rgba(255, 255, 255, 0.2);
+  border-radius: 4px;
+}
+
+/* ── Response Formatting ── */
+.follome-response {
+  font-size: 13px;
+  line-height: 1.6;
+  color: #d4d4d8;
+}
+
+.follome-response p {
+  margin-bottom: 8px;
+}
+
+.follome-response strong {
+  color: #ededed;
+  font-weight: 500;
+}
+
+.follome-steps {
+  list-style: none;
+  padding: 0;
+  margin: 12px 0;
+  counter-reset: step;
+}
+
+.follome-step {
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+  padding: 10px 12px;
+  margin-bottom: 6px;
+  background: rgba(255, 255, 255, 0.04);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 8px;
+  font-size: 13px;
+}
+
+.step-num {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 20px;
+  height: 20px;
+  background: rgba(255, 255, 255, 0.1);
+  color: #ededed;
+  border-radius: 6px;
+  font-size: 11px;
+  font-weight: 600;
+  flex-shrink: 0;
+}
+
+.follome-bullet {
+  padding: 4px 0 4px 16px;
+  position: relative;
+  font-size: 13px;
+  list-style: none;
+}
+
+.follome-bullet::before {
+  content: '•';
+  position: absolute;
+  left: 0;
+  color: #a1a1aa;
+}
+
+/* ── Loading Shimmer ── */
+.follome-loading {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  padding: 4px 0;
+}
+
+.follome-shimmer {
+  height: 12px;
+  border-radius: 4px;
+  background: linear-gradient(90deg, rgba(255, 255, 255, 0.05) 25%, rgba(255, 255, 255, 0.1) 50%, rgba(255, 255, 255, 0.05) 75%);
+  background-size: 200% 100%;
+  animation: follome-shimmer-anim 1.5s infinite;
+}
+
+.follome-shimmer.short {
+  width: 60%;
+}
+
+@keyframes follome-shimmer-anim {
+  0% { background-position: 200% 0; }
+  100% { background-position: -200% 0; }
+}
+
+/* ── Error ── */
+.follome-error {
+  padding: 12px;
+  background: rgba(239, 68, 68, 0.1);
+  border: 1px solid rgba(239, 68, 68, 0.2);
+  border-radius: 8px;
+  color: #fca5a5;
+  font-size: 13px;
+}
+
+/* ── Follow-up Input ── */
+.follome-followup {
+  display: none;
+  padding: 12px 16px;
+  border-top: 1px solid rgba(255, 255, 255, 0.08);
+  gap: 8px;
+  flex-shrink: 0;
+}
+
+.follome-input {
+  flex: 1;
+  height: 36px;
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 8px;
+  padding: 0 12px;
+  color: #ededed;
+  font-size: 13px;
+  outline: none;
+  transition: border-color 0.2s ease;
+}
+
+.follome-input:focus {
+  border-color: #a1a1aa;
+}
+
+.follome-input::placeholder {
+  color: #71717a;
+}
+
+.follome-btn-send {
+  width: 36px;
+  height: 36px;
+  border: none;
+  background: rgba(255, 255, 255, 0.1);
+  color: #ededed;
+  border-radius: 8px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: background 0.2s ease;
+  flex-shrink: 0;
+}
+
+.follome-btn-send:hover {
+  background: rgba(255, 255, 255, 0.2);
+}
+
+/* ── Element Highlight ── */
+.follome-highlight {
+  border: 2px solid #a1a1aa;
+  border-radius: 4px;
+  background: rgba(255, 255, 255, 0.1);
+  pointer-events: none;
+}

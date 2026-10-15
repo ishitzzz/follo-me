@@ -1,0 +1,41 @@
+var m=Object.defineProperty;var x=(o,e,t)=>e in o?m(o,e,{enumerable:!0,configurable:!0,writable:!0,value:t}):o[e]=t;var h=(o,e,t)=>x(o,typeof e!="symbol"?e+"":e,t);class b{constructor(){h(this,"highlights",new Map);h(this,"isActive",!1)}enable(){this.isActive||(this.isActive=!0)}disable(){this.clearAll(),this.isActive=!1}highlight(e){this.isActive||(console.warn("[AgentHighlight] ⚠️ Overlay not active, enabling..."),this.enable());const t=document.querySelector(e.selector);if(!t){console.warn("[AgentHighlight] ⚠️ Element not found:",e.selector);return}this.removeHighlight(e.selector);const i=this.createHighlightOverlay(t,e);this.highlights.set(e.selector,i),e.duration&&e.duration>0&&setTimeout(()=>{this.removeHighlight(e.selector)},e.duration),chrome.runtime.sendMessage({type:"agent_highlight_start",payload:{selector:e.selector,reason:e.reason,mode:e.mode}}).catch(()=>{})}removeHighlight(e){const t=this.highlights.get(e);t&&(t.remove(),this.highlights.delete(e),chrome.runtime.sendMessage({type:"agent_highlight_end",payload:{selector:e}}).catch(()=>{}))}clearAll(){this.highlights.forEach(e=>e.remove()),this.highlights.clear(),chrome.runtime.sendMessage({type:"agent_highlight_end",payload:{selector:"all"}}).catch(()=>{})}createHighlightOverlay(e,t){const i=e.getBoundingClientRect(),d=window.scrollX||document.documentElement.scrollLeft,c=window.scrollY||document.documentElement.scrollTop,r=document.createElement("div");r.className="lyto-agent-highlight",r.setAttribute("data-selector",t.selector),r.setAttribute("data-mode",t.mode),r.style.cssText=`
+      position: absolute;
+      left: ${i.left+d}px;
+      top: ${i.top+c}px;
+      width: ${i.width}px;
+      height: ${i.height}px;
+      pointer-events: none;
+      z-index: 999997;
+      border: 2px solid ${this.getColorForMode(t.mode)};
+      background: ${this.getBackgroundForMode(t.mode)};
+      border-radius: 4px;
+      box-shadow: 0 0 10px ${this.getColorForMode(t.mode)}40;
+      transition: all 0.2s ease;
+      box-sizing: border-box;
+    `;const a=document.createElement("div");if(a.className="lyto-agent-highlight-label",a.textContent=this.getLabelForMode(t.mode),a.style.cssText=`
+      position: absolute;
+      top: -24px;
+      left: 0;
+      background: ${this.getColorForMode(t.mode)};
+      color: white;
+      padding: 2px 8px;
+      border-radius: 4px 4px 0 0;
+      font-size: 11px;
+      font-weight: 600;
+      white-space: nowrap;
+      box-shadow: 0 2px 4px rgba(0,0,0,0.2);
+    `,t.reason){const l=document.createElement("div");l.className="lyto-agent-highlight-tooltip",l.textContent=t.reason,l.style.cssText=`
+        position: absolute;
+        bottom: -28px;
+        left: 0;
+        background: rgba(0, 0, 0, 0.85);
+        color: white;
+        padding: 4px 8px;
+        border-radius: 4px;
+        font-size: 11px;
+        white-space: nowrap;
+        max-width: 300px;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        box-shadow: 0 2px 8px rgba(0,0,0,0.3);
+      `,r.appendChild(l)}r.appendChild(a);const g=()=>{const l=e.getBoundingClientRect(),u=window.scrollX||document.documentElement.scrollLeft,p=window.scrollY||document.documentElement.scrollTop;r.style.left=`${l.left+u}px`,r.style.top=`${l.top+p}px`,r.style.width=`${l.width}px`,r.style.height=`${l.height}px`},n=()=>g();return window.addEventListener("scroll",n,!0),window.addEventListener("resize",n),r.__scrollHandler=n,document.body.appendChild(r),requestAnimationFrame(()=>{r.style.opacity="1"}),r}getColorForMode(e){switch(e){case"agent_action":return"#ff7a00";case"user_search":return"#3b82f6";case"recommended":return"#10b981";default:return"#6366f1"}}getBackgroundForMode(e){switch(e){case"agent_action":return"rgba(255, 122, 0, 0.1)";case"user_search":return"rgba(59, 130, 246, 0.1)";case"recommended":return"rgba(16, 185, 129, 0.1)";default:return"rgba(99, 102, 241, 0.1)"}}getLabelForMode(e){switch(e){case"agent_action":return"⚡ Agent";case"user_search":return"🔍 Search";case"recommended":return"✓ Recommended";default:return"⚡"}}}const s=new b;chrome.runtime.onMessage.addListener((o,e,t)=>(o.type==="AGENT_HIGHLIGHT"?(s.highlight(o.config),t({ok:!0})):o.type==="AGENT_HIGHLIGHT_REMOVE"?(s.removeHighlight(o.selector),t({ok:!0})):o.type==="AGENT_HIGHLIGHT_CLEAR"?(s.clearAll(),t({ok:!0})):o.type==="AGENT_HIGHLIGHT_ENABLE"?(s.enable(),t({ok:!0})):o.type==="AGENT_HIGHLIGHT_DISABLE"&&(s.disable(),t({ok:!0})),!1));export{s as agentHighlightOverlay};

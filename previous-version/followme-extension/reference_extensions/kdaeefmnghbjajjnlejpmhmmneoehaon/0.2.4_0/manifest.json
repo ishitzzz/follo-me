@@ -1,0 +1,65 @@
+{
+   "action": {
+      "default_icon": {
+         "128": "icon128.plasmo.3c1ed2d2.png",
+         "16": "icon16.plasmo.6c567d50.png",
+         "32": "icon32.plasmo.76b92899.png",
+         "48": "icon48.plasmo.aced7582.png",
+         "64": "icon64.plasmo.8bb5e6e0.png"
+      },
+      "default_popup": "popup.html"
+   },
+   "author": "MorphLLM",
+   "background": {
+      "service_worker": "static/background/index.js"
+   },
+   "commands": {
+      "accept-suggestion": {
+         "description": "Accept the suggested action",
+         "suggested_key": {
+            "default": "Ctrl+Period",
+            "mac": "Command+Period"
+         }
+      }
+   },
+   "content_scripts": [ {
+      "all_frames": false,
+      "css": [  ],
+      "js": [ "overlay.c561ff86.js" ],
+      "matches": [ "\u003Call_urls>" ]
+   }, {
+      "all_frames": false,
+      "css": [  ],
+      "js": [ "github-pr.75c624de.js" ],
+      "matches": [ "https://github.com/*/*/pull/*" ]
+   } ],
+   "description": "AI-powered next action prediction for web browsing by MorphLLM",
+   "host_permissions": [ "https://*/*", "http://*/*" ],
+   "icons": {
+      "128": "icon128.plasmo.3c1ed2d2.png",
+      "16": "icon16.plasmo.6c567d50.png",
+      "32": "icon32.plasmo.76b92899.png",
+      "48": "icon48.plasmo.aced7582.png",
+      "64": "icon64.plasmo.8bb5e6e0.png"
+   },
+   "key": "MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAx1KAZj/wjqVxvdPTRptGQOPjf2Kl82Eho4m9BAO38kHSAZF169AJC7o63dTGu0v5nT0fGpiluS1/Wrrd26cq47Dox4H58SxSw4+g8YPabhKYuDy34EaMt+PcaA8tiGFqM07EzV5I/GFab8IkH6dkMDOuU7Szqs5roeaqwsJX0Ll2QOpW3Zg7ZQKx00T+PfDALCa82SR5N5PmMZkN3Tyk9Klme1wsxLpO+MA7wSZal8XFo2fG1iLSF+eNuHwDU3xfA6oYkXB7qOCK1S5idDXSCCdYsgr5idcnhWLkyoVSZ2zL/onzbEZA+TvC2o7L7KSOG3NzFFFz3VBBnL24X1IrmwIDAQAB",
+   "manifest_version": 3,
+   "name": "Morph Tab",
+   "options_ui": {
+      "open_in_tab": true,
+      "page": "options.html"
+   },
+   "permissions": [ "storage", "tabs", "activeTab", "scripting", "identity" ],
+   "update_url": "https://clients2.google.com/service/update2/crx",
+   "version": "0.2.4",
+   "web_accessible_resources": [ {
+      "matches": [ "\u003Call_urls>" ],
+      "resources": [ "assets/rrweb.min.js", "assets/inject.js" ]
+   }, {
+      "matches": [ "\u003Call_urls>" ],
+      "resources": [ "overlay.e4d4ab6c.css" ]
+   }, {
+      "matches": [ "https://github.com/*" ],
+      "resources": [ "github-pr.f8b5c8f8.css" ]
+   } ]
+}

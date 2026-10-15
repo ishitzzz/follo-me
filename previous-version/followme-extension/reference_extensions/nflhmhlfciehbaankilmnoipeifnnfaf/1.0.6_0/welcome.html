@@ -1,0 +1,64 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Welcome to Morph</title>
+  <style>
+    :root {
+      --bg:#0a0a0b; --fg:#fafafa; --muted:#a1a1aa; --faint:#6e6e76;
+      --line:rgba(255,255,255,.14); --line-strong:rgba(255,255,255,.3);
+      --field:#161618; --accent:#fff; --accent-ink:#0a0a0b; --err:#ff6b6b;
+      --mono: ui-monospace,"SF Mono","JetBrains Mono","Cascadia Code",Menlo,Consolas,monospace;
+    }
+    * { box-sizing:border-box; }
+    html,body { margin:0; min-height:100%; background:var(--bg); color:var(--fg); font-family:var(--mono); }
+    .wrap { min-height:100vh; display:flex; align-items:center; justify-content:center; padding:40px 20px; }
+    .card { width:min(540px,100%); border:1px solid var(--line); border-radius:6px; background:#0d0d0f;
+      padding:42px; box-shadow:0 24px 90px -30px rgba(0,0,0,.9); }
+    .logo { display:flex; align-items:center; gap:10px; font-size:13px; font-weight:700; letter-spacing:.26em; }
+    .logo .mark { width:11px; height:11px; background:var(--accent); display:inline-block; }
+    h1 { font-size:23px; letter-spacing:-.01em; margin:26px 0 10px; font-weight:700; line-height:1.25; }
+    p { color:var(--muted); font-size:13px; line-height:1.7; margin:0 0 8px; }
+    .kbd { border:1px solid var(--line-strong); border-radius:3px; padding:1px 6px; color:var(--fg); font-size:11px; }
+    .steps { margin:22px 0 4px; padding:0; list-style:none; }
+    .steps li { color:var(--muted); font-size:12.5px; line-height:1.8; padding-left:18px; position:relative; }
+    .steps li::before { content:">"; position:absolute; left:0; color:var(--faint); }
+    .actions { margin-top:32px; display:flex; align-items:center; gap:18px; flex-wrap:wrap; }
+    .gbtn { display:inline-flex; align-items:center; gap:10px; background:var(--accent); color:var(--accent-ink);
+      border:0; border-radius:3px; padding:12px 18px; font-family:var(--mono); font-size:12px; font-weight:700;
+      letter-spacing:.08em; text-transform:uppercase; cursor:pointer; transition:opacity .12s ease; }
+    .gbtn:hover:not(:disabled) { opacity:.85; }
+    .gbtn:disabled { opacity:.5; cursor:default; }
+    .gbtn .g { width:16px; height:16px; background:#0a0a0b; color:#fff; border-radius:2px;
+      display:inline-grid; place-items:center; font-weight:800; font-size:11px; }
+    .later { color:var(--faint); font-size:12px; text-decoration:none; cursor:pointer; background:none; border:0; font-family:var(--mono); }
+    .later:hover { color:var(--fg); }
+    .status { margin-top:22px; font-size:12.5px; color:var(--muted); min-height:18px; line-height:1.6; }
+    .status.ok { color:var(--fg); }
+    .status.err { color:var(--err); }
+    .priv { margin-top:18px; font-size:11px; color:var(--faint); line-height:1.6; }
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <div class="card">
+      <div class="logo"><i class="mark"></i>MORPH</div>
+      <h1>Reshape any website with a sentence.</h1>
+      <p>Open Morph on any page with <span class="kbd">Alt</span> + <span class="kbd">M</span>, type how it should look, and it reshapes itself — saved per site so it sticks.</p>
+      <ul class="steps">
+        <li>Type "dark mode", "declutter", "bigger text" — anything.</li>
+        <li>Use the ⌖ button to pick one element and change just that part.</li>
+        <li>Sign in so we know you're here and can keep making Morph better.</li>
+      </ul>
+      <div class="actions">
+        <button class="gbtn" id="signin"><span class="g">G</span> Sign in with Google</button>
+        <button class="later" id="later">Maybe later</button>
+      </div>
+      <div class="status" id="status"></div>
+      <p class="priv">We only record that you signed in (a one-way hash + your email domain) to count users — never your browsing or page content.</p>
+    </div>
+  </div>
+  <script src="welcome.js"></script>
+</body>
+</html>

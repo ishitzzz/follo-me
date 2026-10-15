@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <link rel="stylesheet" href="sidepanel.css">
+</head>
+<body>
+
+  <!-- ─── Idle view ───────────────────────────────────────────── -->
+  <main id="idle-view">
+
+    <section class="panel-shell panel-shell-idle">
+      <div class="panel-topline">
+        <div class="site-pill" id="current-site-label" title="Current site">Current site</div>
+        <div class="panel-actions">
+          <span class="panel-shortcut" aria-hidden="true">⌘K</span>
+          <button type="button" class="panel-icon" id="open-admin-icon" title="Open dashboard" aria-label="Open dashboard">
+            <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="M15 3h6v6"></path><path d="M10 14 21 3"></path><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"></path></svg>
+          </button>
+        </div>
+      </div>
+
+      <div class="teach-empty">
+        <div class="teach-art" aria-hidden="true">
+          <div class="teach-window">
+            <span></span><span></span><span></span>
+            <svg class="teach-cursor" width="28" height="28" viewBox="0 0 28 28" fill="none"><path d="M7.5 4.5 21.5 17l-7.2 1.2-3.8 6.3L7.5 4.5Z" fill="#fff" stroke="#111" stroke-width="1.7" stroke-linejoin="round"/></svg>
+          </div>
+          <div class="teach-card"></div>
+        </div>
+        <h1>Teach TipTour your workflow</h1>
+        <p>Go through the steps once. TipTour records the process, creates a draft workflow, and can replay it for your users.</p>
+      </div>
+
+      <section class="tours-section" id="tours-section" hidden>
+        <h2 class="section-heading">Workflows <span id="tours-count"></span></h2>
+        <div id="tours-rows"></div>
+      </section>
+    </section>
+
+    <section class="record-cta">
+      <button type="button" class="btn-primary" id="record-btn">
+        <span class="record-dot" aria-hidden="true"></span>
+        <span>Record this site</span>
+      </button>
+      <p class="record-hint" id="record-hint">Click around your product to capture a tour.</p>
+    </section>
+
+    <details class="site-override" id="workspace-token">
+      <summary>Workspace <span id="workspace-token-current">Not connected</span></summary>
+      <input
+        type="password"
+        class="input"
+        id="workspace-token-input"
+        placeholder="Paste extension token"
+        spellcheck="false"
+        autocapitalize="off"
+        autocorrect="off"
+      />
+      <a class="inline-link" id="workspace-token-clear" hidden>Disconnect workspace</a>
+    </details>
+
+    <details class="settings">
+      <summary>Agent settings</summary>
+      <div class="settings-body">
+        <label class="setting" for="visual-context-toggle">
+          <span>Screenshots in chat</span>
+          <input type="checkbox" id="visual-context-toggle" checked />
+        </label>
+        <label class="setting" for="voice-mode-toggle">
+          <span>Voice replies</span>
+          <input type="checkbox" id="voice-mode-toggle" checked />
+        </label>
+        <label class="setting" for="visual-guidance-mode-toggle" title="Voice mode only: point from screenshot coordinates instead of snapping to DOM elements.">
+          <span>Visual guidance mode</span>
+          <input type="checkbox" id="visual-guidance-mode-toggle" />
+        </label>
+        <label class="setting" for="autopilot-toggle" title="When on, TipTour can run safe tour steps for you by clicking, typing, choosing dropdowns, and toggling controls. Passwords + 2FA are always blocked.">
+          <span>Run for me</span>
+          <input type="checkbox" id="autopilot-toggle" />
+        </label>
+        <label class="setting setting-custom-pointer" for="airbnb-pointer-toggle" title="Show how TipTour can use a customer-branded pointer and theme.">
+          <span>Custom pointer</span>
+          <input type="checkbox" id="airbnb-pointer-toggle" />
+        </label>
+      </div>
+    </details>
+
+    <a class="footer-link" id="open-admin-link" href="#" target="_blank" rel="noreferrer">
+      Open dashboard →
+    </a>
+  </main>
+
+  <!-- ─── Recording view ──────────────────────────────────────── -->
+  <main id="recording-view" hidden>
+
+    <section class="panel-shell panel-shell-recording">
+      <header class="rec-head">
+        <div class="page-dot" aria-hidden="true"></div>
+        <div class="rec-head-text">
+          <div class="rec-head-title" id="rec-domain">…</div>
+          <label class="rec-slug-field" for="rec-slug-input" title="Optional workflow slug. Leave empty to use the generated slug.">
+            <span class="rec-dot" id="rec-dot"></span>
+            <span class="rec-slug-prefix">/</span>
+            <input
+              id="rec-slug-input"
+              type="text"
+              placeholder="workflow-slug"
+              spellcheck="false"
+              autocapitalize="off"
+              autocorrect="off"
+            />
+          </label>
+        </div>
+        <span class="rec-counter" id="rec-counter">0</span>
+      </header>
+
+      <div id="rec-empty" class="rec-empty">
+        <div class="teach-art rec-art" aria-hidden="true">
+          <div class="teach-window">
+            <span></span><span></span><span></span>
+            <svg class="teach-cursor" width="28" height="28" viewBox="0 0 28 28" fill="none"><path d="M7.5 4.5 21.5 17l-7.2 1.2-3.8 6.3L7.5 4.5Z" fill="#fff" stroke="#111" stroke-width="1.7" stroke-linejoin="round"/></svg>
+          </div>
+          <div class="teach-card"></div>
+        </div>
+        <p class="rec-empty-title">Click around your product</p>
+        <p class="rec-empty-sub">Each click, fill, and select becomes a replayable step.</p>
+      </div>
+
+      <div id="rec-timeline" class="rec-timeline" hidden></div>
+    </section>
+
+    <footer class="rec-controls">
+      <button class="ctrl-icon" id="rec-delete-all" title="Discard">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="3 6 5 6 21 6"></polyline><path d="M19 6l-2 14a2 2 0 0 1-2 2H9a2 2 0 0 1-2-2L5 6"></path></svg>
+      </button>
+      <button class="ctrl-icon" id="rec-pause" title="Pause">
+        <svg id="rec-pause-icon" width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><rect x="6" y="4" width="4" height="16"></rect><rect x="14" y="4" width="4" height="16"></rect></svg>
+      </button>
+      <button class="ctrl-icon recording-status" id="rec-mic" title="Recording">
+        <span class="record-dot record-dot-live" aria-hidden="true"></span>
+      </button>
+      <button class="ctrl-done" id="rec-done">Done</button>
+    </footer>
+  </main>
+
+  <script src="config.js"></script>
+  <script src="sidepanel.js"></script>
+</body>
+</html>

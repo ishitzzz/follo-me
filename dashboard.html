@@ -1,0 +1,336 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>ReactAgent Telemetry Dashboard</title>
+  <meta name="description" content="A premium, minimalist dashboard for visualizing ReactAgent telemetry logs.">
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700&display=swap">
+  <style>
+    :root {
+      --bg-color: light-dark(#f4f4f9, #121212);
+      --text-color: light-dark(#111, #eee);
+      --card-bg: light-dark(rgba(255, 255, 255, 0.7), rgba(30, 30, 30, 0.7));
+      --card-border: light-dark(rgba(255, 255, 255, 0.5), rgba(255, 255, 255, 0.1));
+      --accent: light-dark(#3b82f6, #60a5fa);
+      --line-color: light-dark(#cbd5e1, #334155);
+      --font-body: 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+      color-scheme: light dark;
+    }
+    
+    body {
+      margin: 0;
+      padding: 2rem;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      background: var(--bg-color);
+      color: var(--text-color);
+      font-family: var(--font-body);
+      min-height: 100vh;
+    }
+
+    header {
+      width: 100%;
+      max-width: 800px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 3rem;
+      position: sticky;
+      top: 0;
+      padding: 1rem 0;
+      z-index: 10;
+      background: light-dark(rgba(244, 244, 249, 0.8), rgba(18, 18, 18, 0.8));
+      backdrop-filter: blur(12px);
+      border-bottom: 1px solid var(--card-border);
+    }
+
+    h1 {
+      font-size: 2rem;
+      margin: 0;
+      background: linear-gradient(to right in oklch, var(--accent), #a855f7);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+
+    button {
+      padding: 0.6rem 1.2rem;
+      background: var(--card-bg);
+      border: 1px solid var(--card-border);
+      color: var(--text-color);
+      border-radius: 8px;
+      cursor: pointer;
+      font-family: inherit;
+      font-weight: 700;
+      backdrop-filter: blur(10px);
+      transition: transform 0.2s allow-discrete, background-color 0.2s, box-shadow 0.2s;
+    }
+
+    button:hover:not(:disabled) {
+      transform: scale(1.05);
+      background-color: var(--accent);
+      color: #fff;
+      box-shadow: 0 4px 12px rgba(59, 130, 246, 0.3);
+    }
+
+    #flowchart {
+      width: 100%;
+      max-width: 800px;
+      display: flex;
+      flex-direction: column;
+      gap: 2.5rem;
+      position: relative;
+      container-type: inline-size;
+      container-name: flowchart;
+    }
+
+    #flowchart::before {
+      content: "";
+      position: absolute;
+      top: 0;
+      bottom: 0;
+      left: 24px;
+      width: 2px;
+      background: var(--line-color);
+      z-index: 0;
+    }
+
+    .node {
+      display: flex;
+      gap: 1.5rem;
+      position: relative;
+      z-index: 1;
+    }
+
+    .node-marker {
+      width: 12px;
+      height: 12px;
+      border-radius: 50%;
+      background: var(--accent);
+      margin-top: 2rem;
+      margin-left: 19px;
+      flex-shrink: 0;
+      box-shadow: 0 0 0 4px var(--bg-color), 0 0 0 6px var(--accent);
+    }
+
+    .card {
+      background: var(--card-bg);
+      backdrop-filter: blur(16px);
+      -webkit-backdrop-filter: blur(16px);
+      border: 1px solid var(--card-border);
+      border-radius: 16px;
+      padding: 1.5rem;
+      box-shadow: 0 8px 32px rgba(0, 0, 0, 0.05);
+      flex-grow: 1;
+      display: flex;
+      flex-direction: column;
+      gap: 1.5rem;
+      overflow-wrap: anywhere;
+      transition: transform 0.2s;
+    }
+    
+    .card:hover {
+      transform: translateY(-2px);
+    }
+
+    @container flowchart (min-width: 600px) {
+      .card {
+        flex-direction: row;
+        align-items: flex-start;
+      }
+    }
+
+    .card-content {
+      flex: 1;
+      min-width: 0;
+    }
+
+    .card img {
+      max-width: 100%;
+      border-radius: 8px;
+      border: 1px solid var(--line-color);
+      object-fit: contain;
+      background: #000;
+    }
+
+    @container flowchart (min-width: 600px) {
+      .card img {
+        max-width: 320px;
+      }
+    }
+    
+    .card pre {
+      background: light-dark(rgba(0,0,0,0.03), rgba(255,255,255,0.05));
+      padding: 1rem;
+      border-radius: 8px;
+      overflow-x: auto;
+      font-size: 0.85rem;
+      white-space: pre-wrap;
+      max-height: 300px;
+      overflow-y: auto;
+      border: 1px solid var(--card-border);
+    }
+
+    .timestamp {
+      font-size: 0.85rem;
+      opacity: 0.6;
+      margin-bottom: 0.5rem;
+      font-weight: 700;
+    }
+
+    .type-badge {
+      display: inline-block;
+      padding: 0.2rem 0.6rem;
+      border-radius: 6px;
+      background: var(--accent);
+      color: #fff;
+      font-size: 0.75rem;
+      font-weight: bold;
+      margin-bottom: 1rem;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+    }
+
+    /* Scroll entry/exit effects */
+    @media (prefers-reduced-motion: no-preference) {
+      @supports ((animation-timeline: view()) and (animation-range: entry)) {
+        @keyframes slide-fade-in {
+          from {
+            opacity: 0;
+            transform: translateY(40px) scale(0.95);
+          }
+          to {
+            opacity: 1;
+            transform: translateY(0) scale(1);
+          }
+        }
+        
+        .node {
+          animation: slide-fade-in auto linear backwards;
+          animation-timeline: view();
+          animation-range: entry 5% cover 25%;
+        }
+      }
+    }
+
+  </style>
+</head>
+<body>
+  <header>
+    <h1>ReactAgent Telemetry</h1>
+    <button id="clearBtn">Clear Run</button>
+  </header>
+  
+  <div id="flowchart"></div>
+
+  <script>
+    const flowchart = document.getElementById('flowchart');
+    const clearBtn = document.getElementById('clearBtn');
+
+    async function fetchLogs() {
+      try {
+        const response = await fetch('/log');
+        const text = await response.text();
+        const lines = text.split('\n').filter(line => line.trim() !== '');
+        const logs = lines.map(line => {
+          try { return JSON.parse(line); } catch (e) { return null; }
+        }).filter(log => log !== null);
+        logs.sort((a, b) => {
+          const timeA = new Date(a.timestamp).getTime() || 0;
+          const timeB = new Date(b.timestamp).getTime() || 0;
+          return timeA - timeB;
+        });
+        renderLogs(logs);
+      } catch (err) {
+        console.error('Failed to fetch logs', err);
+      }
+    }
+
+    function renderLogs(logs) {
+      flowchart.innerHTML = '';
+      if (!logs || logs.length === 0) {
+        flowchart.innerHTML = '<p style="text-align: center; opacity: 0.5; width: 100%;">Awaiting logs...</p>';
+        return;
+      }
+
+      logs.forEach(log => {
+        const node = document.createElement('div');
+        node.className = 'node';
+
+        const marker = document.createElement('div');
+        marker.className = 'node-marker';
+        node.appendChild(marker);
+
+        const card = document.createElement('div');
+        card.className = 'card';
+
+        const content = document.createElement('div');
+        content.className = 'card-content';
+
+        let date = new Date(log.timestamp);
+        if (isNaN(date.getTime())) {
+          date = new Date(0);
+        }
+        const timestamp = date.toLocaleString();
+        
+        const timeDiv = document.createElement('div');
+        timeDiv.className = 'timestamp';
+        timeDiv.textContent = timestamp;
+        content.appendChild(timeDiv);
+
+        if (log.type) {
+          const typeBadge = document.createElement('div');
+          typeBadge.className = 'type-badge';
+          typeBadge.textContent = log.type;
+          content.appendChild(typeBadge);
+        }
+
+        const dataToDisplay = JSON.parse(JSON.stringify(log));
+        delete dataToDisplay.image;
+        if (dataToDisplay.data && dataToDisplay.data.image) {
+          delete dataToDisplay.data.image;
+        }
+
+        const dataPre = document.createElement('pre');
+        dataPre.textContent = JSON.stringify(dataToDisplay, null, 2);
+        content.appendChild(dataPre);
+
+        card.appendChild(content);
+
+        // Render base64 image if exists
+        const imgData = log.image || (log.data && log.data.image);
+        if (imgData) {
+          const img = document.createElement('img');
+          img.src = (typeof imgData === 'string' && imgData.startsWith('data:image')) ? imgData : `data:image/png;base64,${imgData}`;
+          img.alt = 'UI Screenshot';
+          card.appendChild(img);
+        }
+
+        node.appendChild(card);
+        flowchart.appendChild(node);
+      });
+    }
+
+    let isClearing = false;
+    let fetchInterval = setInterval(fetchLogs, 3000);
+
+    clearBtn.addEventListener('click', async () => {
+      if (isClearing) return;
+      isClearing = true;
+      clearInterval(fetchInterval);
+      renderLogs([]);
+      try {
+        await fetch('/log', { method: 'DELETE' });
+      } catch (err) {
+        console.error('Failed to clear logs', err);
+      } finally {
+        fetchInterval = setInterval(fetchLogs, 3000);
+        isClearing = false;
+      }
+    });
+
+    // Initial fetch
+    fetchLogs();
+  </script>
+</body>
+</html>

@@ -1,0 +1,1 @@
+try{chrome.runtime.sendMessage({type:"CS_READY",href:window.location.href,t:Date.now()},()=>{chrome.runtime.lastError&&console.warn("[Lyto CS] Failed to send CS_READY:",chrome.runtime.lastError.message)})}catch(e){console.warn("[Lyto CS] Failed to send CS_READY:",e)}setTimeout(()=>{},2e3);

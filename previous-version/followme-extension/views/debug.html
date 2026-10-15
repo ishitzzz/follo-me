@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>FolloMe Debug Trace</title>
+    <style>
+        body { font-family: monospace; padding: 20px; background: #1e1e1e; color: #d4d4d4; }
+        h2 { color: #569cd6; border-bottom: 1px solid #333; padding-bottom: 5px; }
+        pre { background: #2d2d2d; padding: 15px; border-radius: 5px; overflow-x: auto; }
+        .success { color: #4ec9b0; }
+        .error { color: #f14c4c; }
+    </style>
+</head>
+<body>
+    <h1>🧠 FolloMe Agent Trace</h1>
+    
+    <h2>Memory Snapshot (Lyto)</h2>
+    <pre id="memory-state">Loading...</pre>
+
+    <h2>Active DOM Context</h2>
+    <pre id="dom-state">Waiting for extraction...</pre>
+    
+    <h2>LLM Execution Plan</h2>
+    <pre id="llm-state">Waiting for inference...</pre>
+
+    <script>
+        // Poll chrome.storage.local to visualize memory state
+        setInterval(async () => {
+            const data = await chrome.storage.local.get('folloMeSession');
+            document.getElementById('memory-state').textContent = JSON.stringify(data.folloMeSession, null, 2);
+        }, 1000);
+    </script>
+</body>
+</html>

@@ -1,0 +1,121 @@
+{
+"update_url": "https://clients2.google.com/service/update2/crx",
+
+  "manifest_version": 3,
+  "name": "MultiOn",
+  "description": "Your AI Web Co-Pilot: Don't browse alone anymore!",
+  "version": "0.28.0",
+  "omnibox": {
+    "keyword": "m"
+  },
+  "options_page": "options.html",
+  "background": {
+    "service_worker": "background.bundle.js"
+  },
+  "action": {
+    "default_popup": "popup.html",
+    "default_icon": "icon-black-34.png"
+  },
+  "commands": {
+    "toggle-feature": {
+      "suggested_key": {
+        "default": "Ctrl+Shift+E",
+        "windows": "Ctrl+Shift+E",
+        "mac": "Command+E"
+      },
+      "description": "Toggle In-Page popup"
+    },
+    "_execute_action": {
+      "suggested_key": {
+        "default": "Ctrl+M",
+        "mac": "Command+M"
+      }
+    }
+  },
+  "externally_connectable": {
+    "ids": [
+      "ddmjhdbknfidiopmbaceghhhbgbpenmm"
+    ],
+    "matches": [
+      "https://example.com/*",
+      "https://delta.com/*",
+      "https://*.multion.ai/*",
+      "https://*.multion.tech/*",
+      "http://localhost:3000/*",
+      "https://*.anon.com/*"
+    ],
+    "accepts_tls_channel_id": false
+  },
+  "permissions": [
+    "tabs",
+    "activeTab",
+    "storage",
+    "identity",
+    "identity.email",
+    "notifications",
+    "offscreen",
+    "cookies",
+    "scripting",
+    "unlimitedStorage",
+    "webNavigation",
+    "contextMenus"
+  ],
+  "host_permissions": [
+    "<all_urls>"
+  ],
+  "icons": {
+    "16": "icon-16.png",
+    "48": "icon-black-48.png",
+    "128": "icon-black-background-128.png"
+  },
+  "content_scripts": [
+    {
+      "matches": [
+        "http://*/*",
+        "https://*/*",
+        "<all_urls>"
+      ],
+      "js": [
+        "contentApp.bundle.js"
+      ],
+      "css": [],
+      "match_about_blank": true,
+      "run_at": "document_end"
+    }
+  ],
+  "web_accessible_resources": [
+    {
+      "resources": [
+        "icon-128.png",
+        "icon-34.png"
+      ],
+      "matches": []
+    },
+    {
+      "resources": [
+        "popup.html",
+        "chat_assistant.html",
+        "audio.html",
+        "camera.html",
+        "video_editor.html",
+        "offscreen.html",
+        "debug.html",
+        "multion.html",
+        "remote.html",
+        "rrwebiframe.html",
+        "rrweb.bundle.js",
+        "contentApp.bundle.js",
+        "contentApp.css"
+      ],
+      "matches": [
+        "http://*/*",
+        "https://*/*",
+        "<all_urls>"
+      ]
+    }
+  ],
+  "content_security_policy": {
+    "extension_pages": "script-src 'self' 'wasm-unsafe-eval'; object-src 'self';",
+    "sandbox": "sandbox allow-scripts allow-forms allow-popups allow-modals; script-src 'self' 'unsafe-inline' 'unsafe-eval'; child-src 'self';"
+  }
+}

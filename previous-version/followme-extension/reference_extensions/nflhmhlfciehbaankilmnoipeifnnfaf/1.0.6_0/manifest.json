@@ -1,0 +1,50 @@
+{
+   "action": {
+      "default_icon": {
+         "128": "icons/icon128.png",
+         "16": "icons/icon16.png",
+         "48": "icons/icon48.png"
+      },
+      "default_popup": "popup/popup.html",
+      "default_title": "Morph"
+   },
+   "background": {
+      "service_worker": "src/background.js"
+   },
+   "commands": {
+      "toggle-morph": {
+         "description": "Toggle the Morph prompt bar",
+         "suggested_key": {
+            "default": "Alt+M"
+         }
+      }
+   },
+   "content_scripts": [ {
+      "all_frames": false,
+      "js": [ "src/recipes.js", "src/early.js" ],
+      "matches": [ "\u003Call_urls>" ],
+      "run_at": "document_start"
+   }, {
+      "all_frames": false,
+      "js": [ "src/dsl.js", "src/context.js", "src/recipes.js", "src/connectors.js", "src/picker.js", "src/promptbar.js", "src/content.js" ],
+      "matches": [ "\u003Call_urls>" ],
+      "run_at": "document_idle"
+   } ],
+   "description": "Type how a page should look and it reshapes itself. Saved per-site and reapplied on every visit.",
+   "host_permissions": [ "\u003Call_urls>" ],
+   "icons": {
+      "128": "icons/icon128.png",
+      "16": "icons/icon16.png",
+      "48": "icons/icon48.png"
+   },
+   "key": "MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEA3aCs/RwDXb0/rA4mO5jEYeab8ucZnGLBaABfg5BZpa4Fi3IjmVPlq5UEyL1+PDn1+NfXb5nBFtPG/V6ajjX9xZT4SzEA6dguakL8mid7Eli08HuoBlv+YuuDV3LTR63igFNLxxIx2Md2UmCqQLt/OpuSzeHIUr3ak4veU/KdvV6oxRkMXH1e+Rmasb7NNqaaHAjA2Nj+I+VpDMzYHWDMz812iRKX+k9eXiiUf0obxBRWgGfodYjxonhjHdFus5CN59j/o8r1RwuQNpqkexzRqTImCskTaN6RbKOfbyqafGxTZsMjM8zGfYf8T6golwsPfVkfn5/m8MkaAyEPiBw+9wIDAQAB",
+   "manifest_version": 3,
+   "name": "Morph — reshape any website",
+   "oauth2": {
+      "client_id": "77162619862-b58i1aqhn1l02lv9gpfst4tj5ol60obe.apps.googleusercontent.com",
+      "scopes": [ "openid", "email", "profile" ]
+   },
+   "permissions": [ "storage", "activeTab", "scripting", "identity" ],
+   "update_url": "https://clients2.google.com/service/update2/crx",
+   "version": "1.0.6"
+}
